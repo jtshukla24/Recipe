@@ -18,10 +18,11 @@ def recipe(request):
         Recipe.objects.create(
             recipe_name=recipe_name,
             recipe_description=recipe_description,
-            recipe_image=recipe_image)
+            recipe_image=recipe_image
+        )
 
-        return redirect("/")
-        # return redirect("/recipe/")
+        # return redirect("/")
+        return redirect("/recipe/")
     queryset = Recipe.objects.all()
 
     if request.GET.get('search'):
@@ -35,7 +36,7 @@ def recipe(request):
 def delete_recipe(request, id):
     queryset = Recipe.objects.get(id=id)
     queryset.delete()
-    return redirect('/')
+    return redirect('/recipe/')
 
 
 @login_required(login_url='/login')
@@ -45,7 +46,7 @@ def update_recipe(request, id):
         data = request.POST
         recipe_name = data.get("recipe_name")
         recipe_description = data.get("recipe_description")
-        recipe_image = request.FILES.get('recipe_image')
+        recipe_image = request.FILES.get("recipe_image")
 
         queryset.recipe_name = recipe_name
         queryset.recipe_description = recipe_description
@@ -53,7 +54,7 @@ def update_recipe(request, id):
         if queryset.recipe_image:
             queryset.recipe_image = recipe_image
         queryset.save()
-        return redirect('/')
+        return redirect('/recipe/')
 
     context = {'recipes': queryset}
     return render(request, "update_recipe.html", context)
@@ -66,17 +67,17 @@ def login_page(request):
 
         if not User.objects.filter(username=username).exists():
             messages.error(request, 'invalid user name')
-            return redirect('/login/')
+            return redirect('/')
 
         user = authenticate(username=username, password=password)
 
         if user is None:
             messages.error(request, 'invalid password')
-            return redirect('/login/')
+            return redirect('/')
 
         else:
             login(request, user)
-            return redirect("/")
+            return redirect("/recipe/")
 
     return render(request, "login.html")
 
@@ -102,10 +103,10 @@ def register(request):
         user.save()
         messages.info(request, 'account created successfully')
 
-        return redirect('/register/')
+        return redirect('/')
     return render(request, "register.html")
 
 
 def logout_page(request):
     logout(request)
-    return redirect('/login/')
+    return redirect('/')
