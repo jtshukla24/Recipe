@@ -1,70 +1,76 @@
-{%  extends "base.html" %}
+{% extends "base.html" %}
+{% load static %}
 
-{%  block start %}
+{% block start %}
+<div class="container mt-5">
+<style>
+    html, body {
+        height: 100%;
+        margin: 0;
+        font-family: 'Roboto', sans-serif;
+        overflow: auto;
+    }
+    body {
+        background-color: rgba(240, 240, 240, 0.19);
+        min-height: 100vh;
+        display: flex; flex-direction: column;
+    }
+</style>
 
-    <div class="container mt-5">
-
-        <form class="col-6 mx-auto card p-3 shadow-1g" method="post" enctype="multipart/form-data">
-            {%  csrf_token %}
-            <h1>Add Recipe</h1>
-          <div class="mb-3">
-            <label for="exampleInputEmail1">Recipe name</label>
-            <input name = "recipe_name" required type="text" class="form-control">
-          </div>
-
-          <div class="mb-3">
-            <label for="exampleInputPassword1" class ="form-label">Recipe Description</label>
-              <textarea name = "recipe_description"  required type="text" class="form-control"></textarea>
-          </div>
-
-          <div class="mb-3">
+    <form class="col-6 mx-auto" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <h1>Add Recipe</h1>
+        <div class="mb-3">
+            <label for="exampleInputEmail1">Recipe Name</label>
+            <input name="recipe_name" required type="text" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Recipe Description</label>
+            <textarea name="recipe_description" required type="text" class="form-control"></textarea>
+        </div>
+        <div class="mb-3">
             <label for="exampleInputEmail1">Recipe Image</label>
-            <input name = "recipe_image" type="file" class="form-control">
-          </div>
+            <input name="recipe_image" type="file" class="form-control">
+        </div>
+        <button type="submit" class="btn btn-primary">Add Recipe</button>
+    </form>
 
-          <button type="submit" class="btn btn-primary">Add Recipe</button>
-        </form>
-        <form>
+    <form>
         <div class="mt-5">
             <div class="mx-auto col-6">
                 <label for="exampleInputEmail1">Search Recipe</label>
-                <input name = "search" type="text" class="form-control mt-2">
-                <button type = "submit" class = "btn btn-primary mt-2">Search</button>
+                <input name="search" type="text" class="form-control mt-2">
+                <button type="submit" class="btn btn-primary mt-2">Search</button>
             </div>
-
         </div>
-        </form>
-        <table class="table mt-2">
-              <thead>
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Recipe Name</th>
-                  <th scope="col">Description</th>
-                  <th scope="col">Image</th>
-                  <th scope="col">Actions</th>
-                </tr>
-              </thead>
+    </form>
 
-              <tbody>
-              {%  for recipe in recipes %}
-                <tr>
-                  <th scope="row">{{ forloop.counter }}</th>
-                  <td>{{ recipe.recipe_name }}</td>
-                  <td>{{ recipe.recipe_description }}</td>
-                  <td>
-                      <img src="/media/{{ recipe.recipe_image }}" style="height: 200px" alt="recipe image">
-                  </td>
-
-                    <td>
-                        <a href="/delete_recipe/{{ recipe.id }}" class="btn btn-danger">Delete</a>
-                        <a href="/update_recipe/{{ recipe.id }}" class="btn btn-success">Update</a>
-                    </td>
-
-                </tr>
-                {% endfor %}
-              </tbody>
-        </table>
-
-    </div>
-
+    <table class="table mt-2">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Recipe Name</th>
+                <th scope="col">Description</th>
+                <th scope="col">Image</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for recipe in recipes %}
+            <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ recipe.recipe_name }}</td>
+                <td>{{ recipe.recipe_description }}</td>
+                <td>
+                    <img src="/media/{{ recipe.recipe_image }}" style="height: 200px" alt="Recipe Image">
+                </td>
+                <td>
+                    <a href="/delete_recipe/{{ recipe.id }}" class="btn btn-danger">Delete</a>
+                    <a href="/update_recipe/{{ recipe.id }}" class="btn btn-success">Update</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}

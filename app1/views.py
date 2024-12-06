@@ -20,9 +20,9 @@ def recipe(request):
             recipe_description=recipe_description,
             recipe_image=recipe_image
         )
-
-        # return redirect("/")
+        messages.success(request, 'Recipe created successfully!')
         return redirect("/recipe/")
+        # return redirect("/")
     queryset = Recipe.objects.all()
 
     if request.GET.get('search'):
@@ -36,8 +36,8 @@ def recipe(request):
 def delete_recipe(request, id):
     queryset = Recipe.objects.get(id=id)
     queryset.delete()
+    messages.success(request, 'Recipe deleted successfully!')
     return redirect('/recipe/')
-
 
 @login_required(login_url='/login')
 def update_recipe(request, id):
@@ -54,6 +54,7 @@ def update_recipe(request, id):
         if queryset.recipe_image:
             queryset.recipe_image = recipe_image
         queryset.save()
+        messages.success(request, 'Recipe updated successfully!')
         return redirect('/recipe/')
 
     context = {'recipes': queryset}
@@ -66,13 +67,14 @@ def login_page(request):
         password = request.POST.get('password')
 
         if not User.objects.filter(username=username).exists():
-            messages.error(request, 'invalid user name')
+            messages.error(request, 'The username you entered does not exist.'
+                                    ' Please try again or register for a new account.')
             return redirect('/')
 
         user = authenticate(username=username, password=password)
 
         if user is None:
-            messages.error(request, 'invalid password')
+            messages.error(request, 'Incorrect password. Please try again.')
             return redirect('/')
 
         else:
@@ -91,7 +93,7 @@ def register(request):
 
         user = User.objects.filter(username=username)
         if user.exists():
-            messages.info(request, 'username already exists')
+            messages.info(request, 'The username is already taken. Please choose a different username.')
             return redirect('/register/')
 
         user = User.objects.create(

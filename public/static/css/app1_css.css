@@ -1,33 +1,112 @@
-{% load static %}
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
+
+body {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    overflow: hidden;
+}
+
+#login, #register {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 80px;
+    height: calc(100vh - 80px);
+    width: 100%;
+}
+
+#login .btn-primary, #register .btn-primary {
+    font-size: 18px;
+    padding: 10px 20px;
+    background-color: #ff6347;
+    border-color: #ff6347;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+#login .btn-primary:hover, #register .btn-primary:hover {
+    background-color: #e5533d;
+    transform: scale(1.05);
+}
+
+.navbar {
+    background-color: rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 2;
+}
 
 .overlay {
-    background: rgba(0, 0, 0, 0);
-    position: absolute;
+    background: rgba(0, 0, 0, 0.5);
+    position: fixed;
     top: 0;
     bottom: 0;
     left: 0;
     right: 0;
+    z-index: 0;
 }
 
-
-.card {
-    background-color: rgba(255, 255, 255, 0.5);
+#login .card, #register .card {
+    background-color: rgba(255, 255, 255, 0.8);
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 400px;
-    padding: 20px;
-    margin-top: 100px; /* Adjust as needed */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    padding: 35px;
+    z-index: 1;
+    position: relative;
 }
 
-.form-group {
-    margin-bottom: 15px;
-}
-
-.form-control {
+#login .form-group, #register .form-group {
     margin-bottom: 10px;
 }
 
-.btn-primary:hover {
-    background-color: #0056b3;
+#login .form-control, #register .form-control {
+    margin-bottom: 10px;
 }
 
+#login .card a, #register .card a {
+    color: #007bff;
+}
+
+#login .card a:hover, #register .card a:hover {
+    color: #0056b3;
+}
+
+.brand-text {
+    font-family: 'Pacifico', cursive;
+    font-size: 24px;
+    color: #ff6347;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.container {
+    margin-top: 80px;
+}
+
+form, .table {
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+.btn-primary {
+    font-size: 18px;
+    padding: 10px 20px;
+    background-color: #ff6347;
+    border-color: #ff6347;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: #e5533d;
+    transform: scale(1.05);
+}
+
+h1, h2, p, label, input, button, table {
+    color: #333;
+}

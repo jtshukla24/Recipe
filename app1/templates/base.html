@@ -12,15 +12,19 @@
 </head>
 <body>
 
-<nav class="navbar navbar-light bg-light justify-content-between bg-dark shadow=lg p-3 dark">
-  <a class="navbar-brand">Navbar</a>
-  <form class="form-inline">
-      {%  if request.user.is_authenticated %}
-    <a href="/logout/" class="btn btn-outline-success my-2 my-sm-0" type="submit">Logout</a>
-      {% else %}
-          <a href="/" class="btn btn-outline-success my-2 my-sm-0" type="submit">Login</a>
-    {% endif %}
-  </form>
+<nav class="navbar navbar-dark shadow-lg p-3" style="position: fixed; top: 0; width: 100%; z-index: 2;">
+    <a class="navbar-brand" href="#">
+    <img src="{% static 'DishDelight.png' %}" alt="Logo" style="height: 40px;">
+    <span class="brand-text">DishDelight</span>
+</a>
+
+
+
+    <form class="form-inline">
+        {% if request.user.is_authenticated %}
+        <a href="/logout/" class="btn btn-outline-success my-2 my-sm-0" type="submit">Logout</a>
+        {% endif %}
+    </form>
 </nav>
 {% block start %}
 {% endblock %}
