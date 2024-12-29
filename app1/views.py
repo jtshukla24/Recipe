@@ -5,10 +5,12 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-
 from django.contrib.auth import get_user_model
+from django.contrib.auth.hashers import make_password
 
-User =  get_user_model()
+
+User = get_user_model()
+
 
 # Create your views here.
 @login_required(login_url='/login')
@@ -42,6 +44,7 @@ def delete_recipe(request, id):
     messages.success(request, 'Recipe deleted successfully!')
     return redirect('/recipe/')
 
+
 @login_required(login_url='/login')
 def update_recipe(request, id):
     queryset = Recipe.objects.get(id=id)
@@ -66,15 +69,15 @@ def update_recipe(request, id):
 
 def login_page(request):
     if request.method == "POST":
-        username = request.POST.get('username')
+        phone_number = request.POST.get('phone_number')
         password = request.POST.get('password')
 
-        if not User.objects.filter(username=username).exists():
+        if not User.objects.filter(phone_number=phone_number).exists():
             messages.error(request, 'The username you entered does not exist.'
                                     ' Please try again or register for a new account.')
             return redirect('/')
 
-        user = authenticate(username=username, password=password)
+        user = authenticate(phone_number=phone_number, password=password)
 
         if user is None:
             messages.error(request, 'Incorrect password. Please try again.')
@@ -91,26 +94,30 @@ def register(request):
     if request.method == "POST":
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
-        username = request.POST.get('username')
+        phone_number = request.POST.get('phone_number')
+        email = request.POST.get('email')
         password = request.POST.get('password')
 
-        user = User.objects.filter(username=username)
-        if user.exists():
-            messages.info(request, 'The username is already taken. Please choose a different username.')
+        if User.objects.filter(phone_number=phone_number).exists():
+            messages.info(request, 'The phone number is already taken. Please choose a different phone number.')
+            return redirect('/register/')
+
+        if User.objects.filter(email=email).exists():
+            messages.info(request, 'The email is already taken. Please choose a different email.')
             return redirect('/register/')
 
         user = User.objects.create(
+            phone_number=phone_number,
             first_name=first_name,
             last_name=last_name,
-            username=username,
+            email=email,
+            password=make_password(password)
         )
-        user.set_password(password)
         user.save()
-        messages.info(request, 'account created successfully')
+        messages.success(request, 'User registered successfully.')
+        return redirect('/login/')
 
-        return redirect('/')
     return render(request, "register.html")
-
 
 def logout_page(request):
     logout(request)
